@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Customer Churn Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        #inputBox {
+            margin: 20px auto;
+            padding: 10px;
+        }
+        #result {
+            margin: 20px auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Customer Churn Prediction</h1>
+    
+    <div id="inputBox">
+        <label for="customerData">Upload customer data (CSV file):</label><br>
+        <input type="file" id="customerData"><br>
+        <button onclick="predictChurn()">Predict Churn</button>
+    </div>
+
+    <div id="result">
+        <h2>Churn Prediction Result:</h2>
+        <pre id="predictionResult"></pre>
+    </div>
+
+    <script>
+        function predictChurn() {
+            const customerDataInput = document.getElementById("customerData");
+            const customerDataFile = customerDataInput.files[0];
+
+            if (customerDataFile) {
+                const formData = new FormData();
+                formData.append("file", customerDataFile);
+
+                // Send the uploaded file to the server for churn prediction
+                fetch("/predict-churn", {
+                    method: "POST",
+                    body: formData
+                })
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById("predictionResult").textContent = data;
+                });
+            } else {
+                alert("Please select a file.");
+            }
+        }
+    </script>
+</body>
+</html>
